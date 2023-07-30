@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
 });
   
 
-export { router as userRouter };
+export { router as usersRouter };
 
 
 export const verifyToken = (req, res, next) => {
