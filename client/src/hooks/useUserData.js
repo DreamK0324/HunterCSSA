@@ -6,6 +6,12 @@ const useUserData = (userID) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+
+      if (!userID) {
+        setUserData(null);
+        return;
+      }
+
       try {
         const response = await axios.get(`http://localhost:5001/auth/${userID}`); 
         setUserData(response.data);
