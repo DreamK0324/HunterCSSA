@@ -84,9 +84,6 @@ const Register = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
-  
   
   const handleSubmit = async (event) => {
     event.preventDefault();
