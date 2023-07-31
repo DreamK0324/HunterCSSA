@@ -47,7 +47,7 @@ export const CreateFact = () => {
 
   return (
     <div className="create-fact">
-      <h2>Create Fact</h2>
+      <h2>Create Event</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="theme">Theme</label>
         <input
