@@ -41,6 +41,10 @@ export const CreateFact = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1); 
+  }
+
   return (
     <div className="create-fact">
       <h2>Create Fact</h2>
@@ -91,6 +95,8 @@ export const CreateFact = () => {
 
         <button type="submit">Create</button>
       </form>
+
+      <button onClick={handleBack}>Back</button>
     </div>
   );
 };
