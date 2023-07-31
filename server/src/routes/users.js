@@ -9,6 +9,27 @@ const router = express.Router();
 dotenv.config();
 const secret = process.env.JWT_SECRET;
 
+router.get("/", async (req, res) => {
+  try {
+    const result = await UserModel.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Get a single user by ID
+router.get("/:userId", async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
@@ -42,9 +63,11 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ id: user._id }, secret);
   res.json({ token, userID: user._id });
 });
+
+
   
 
-export { router as userRouter };
+export { router as usersRouter };
 
 
 export const verifyToken = (req, res, next) => {

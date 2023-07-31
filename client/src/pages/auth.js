@@ -28,6 +28,11 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!username || !password) {
+      alert("Please enter both username and password.");
+      return;
+    }
+
     try {
       const result = await axios.post("http://localhost:5001/auth/login", {
         username,
@@ -39,6 +44,11 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("An error occurred during registration.");
+      }
     }
   };
 
@@ -74,10 +84,18 @@ const Register = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
   
   
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!username || !password) {
+      alert("Please enter both username and password.");
+      return; 
+    }
+
     try {
       await axios.post("http://localhost:5001/auth/register", {
         username,
@@ -86,6 +104,11 @@ const Register = () => {
       alert("Registration Completed! Now login.");
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("An error occurred during registration.");
+      }
     }
   };
 
