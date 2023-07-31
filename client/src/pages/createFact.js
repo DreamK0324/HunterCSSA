@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 export const CreateFact = () => {
   const userID = useGetUserID();
-  const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, ] = useCookies(["access_token"]);
   const [fact, setFact] = useState({
     theme: "",
     date: "",
