@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 export const CreateFact = () => {
   const userID = useGetUserID();
-  const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, ] = useCookies(["access_token"]);
   const [fact, setFact] = useState({
     theme: "",
     date: "",
@@ -41,9 +41,13 @@ export const CreateFact = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1); 
+  }
+
   return (
     <div className="create-fact">
-      <h2>Create Fact</h2>
+      <h2>Create Event</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="theme">Theme</label>
         <input
@@ -91,6 +95,8 @@ export const CreateFact = () => {
 
         <button type="submit">Create</button>
       </form>
+
+      <button onClick={handleBack}>Back</button>
     </div>
   );
 };

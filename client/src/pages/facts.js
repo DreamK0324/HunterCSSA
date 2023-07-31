@@ -33,11 +33,11 @@ export const Facts = () => {
 
   return (
     <div>
-      <h2>Facts</h2>
+      <h2>Events</h2>
       {/* <button onClick={handleCreateFact} className="create-button">Create Fact</button> */}
       {canCreateFact && (
         <button onClick={handleCreateFact} className="create-button">
-          Create Fact
+          Create Event
         </button>
       )}
 
