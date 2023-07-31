@@ -3,7 +3,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import { usersRouter } from "./routes/users.js";
-import { affairsRouter } from "./routes/affairs.js";
+import { factsRouter } from "./routes/facts.js";
+
 
 
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/auth", usersRouter);
-app.use("/affairs", affairsRouter);
+app.use("/facts", factsRouter);
 
 dotenv.config();
 const URL = process.env.URL;

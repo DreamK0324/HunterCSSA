@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const AffairSchema = mongoose.Schema({
+const FactSchema = mongoose.Schema({
     theme: {
         type: String,
         required: true,
@@ -38,4 +38,4 @@ const AffairSchema = mongoose.Schema({
     },
 });
 
-export const AffairModel = mongoose.model("Affairs", AffairSchema);
+export const FactModel = mongoose.model("Facts", FactSchema);

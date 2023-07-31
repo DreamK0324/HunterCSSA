@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { AffairModel } from "../models/Affairs.js";
+import { FactModel } from "../models/Facts.js";
 import { UserModel } from "../models/Users.js";
 import { verifyToken } from "./users.js";
 
@@ -9,20 +9,20 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-      const result = await AffairModel.find({});
+      const result = await FactModel.find({});
       res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
     }
 });
 
-// Create a new affair
+// Create a new fact
 router.post("/", verifyToken, async (req, res) => {
-    const affair = new AffairModel(req.body);
-    console.log(affair);
+    const fact = new FactModel(req.body);
+    console.log(fact);
   
     try {
-      const result = await affair.save();
+      const result = await fact.save();
       res.status(201).json(result);
     } catch (err) {
       // console.log(err);
@@ -30,57 +30,57 @@ router.post("/", verifyToken, async (req, res) => {
     }
 });
 
-// Get an affair by ID
-router.get("/:affairId", async (req, res) => {
+// Get an fact by ID
+router.get("/:factId", async (req, res) => {
     try {
-      const result = await AffairModel.findById(req.params.affairId);
+      const result = await FactModel.findById(req.params.factId);
       res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
     }
 });
 
-// Save an affair
+// Save an fact
 router.put("/", async (req, res) => {
-    const affair = await AffairModel.findById(req.body.affairId);
+    const fact = await FactModel.findById(req.body.factId);
     const user = await UserModel.findById(req.body.userId);
     try {
-      user.savedAffairs.push(affair);
+      user.savedFacts.push(fact);
       await user.save();
-      res.status(201).json({ savedAffairs: user.savedAffairs });
+      res.status(201).json({ savedFacts: user.savedFacts });
     } catch (err) {
       res.status(500).json(err);
     }
 });
 
-// Get id of saved affairs
-router.get("/savedAffairs/ids/:userId", async (req, res) => {
+// Get id of saved facts
+router.get("/savedFacts/ids/:userId", async (req, res) => {
     try {
       const user = await UserModel.findById(req.params.userId);
-      res.status(201).json({ savedAffairs: user?.savedAffairs });
+      res.status(201).json({ savedFacts: user?.savedFacts });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
 });
 
-// Get saved affairs
-router.get("/savedAffairs/:userId", async (req, res) => {
+// Get saved facts
+router.get("/savedFacts/:userId", async (req, res) => {
     try {
       const user = await UserModel.findById(req.params.userId);
-      const savedAffairs = await AffairModel.find({
-        _id: { $in: user.savedAffairs },
+      const savedFacts = await FactModel.find({
+        _id: { $in: user.savedFacts },
       });
   
-      console.log(savedAffairs);
-      res.status(201).json({ savedAffairs });
+      console.log(savedFacts);
+      res.status(201).json({ savedFacts });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
-  });
+});
 
 
 
 
-export { router as affairsRouter };
+export { router as factsRouter };
