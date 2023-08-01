@@ -9,6 +9,7 @@ const router = express.Router();
 dotenv.config();
 const secret = process.env.JWT_SECRET;
 
+// get all users
 router.get("/", async (req, res) => {
   try {
     const result = await UserModel.find({});
@@ -18,7 +19,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a single user by ID
+// get a single user by ID
 router.get("/:userId", async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userId);
@@ -31,6 +32,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+// register
 router.post("/register", async (req, res) => {
     const { username, password, email } = req.body;
     const user = await UserModel.findOne({ username });
@@ -43,6 +45,7 @@ router.post("/register", async (req, res) => {
     res.json({ message: "User registered successfully" });
 });
 
+// login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -64,7 +67,7 @@ router.post("/login", async (req, res) => {
   res.json({ token, userID: user._id });
 });
 
-
+// verify token
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -79,6 +82,7 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
+// update user data for finding mate
 router.put("/mate", verifyToken, async (req, res) => {
   const { userOwner } = req.body; 
   const { major, minor, gradYear, borough } = req.body; 
@@ -103,7 +107,7 @@ router.put("/mate", verifyToken, async (req, res) => {
 });
 
 
-
+// get the result of mates
 router.get("/mate/search", verifyToken, async (req, res) => {
   try {
     const { major, minor, gradYear, borough } = req.query;

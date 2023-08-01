@@ -199,46 +199,59 @@ export const Home = () => {
  
 
       <div>
-        
-        <div>
-          <h4>Results for Major:</h4>
-          <ul>
-            {matchMajor.map((result) => (
-              <li key={result._id}>
-                {result.username} <br /> {result.email}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {matchMajor.length > 0 && (
+          <div>
+            <h4>Results for Major:</h4>
+            <ul>
+              {matchMajor.map((result) => (
+                <li key={result._id}>
+                  {result.username} <br /> {result.email}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div>
-          <h4>Results for Minor:</h4>
-          <ul>
-            {matchMinor.map((result) => (
-              <li key={result._id}>{result.username} <br/> {result.email}</li>
-            ))}
-          </ul>
-        </div>
+        {matchMinor.length > 0 && (
+          <div>
+            <h4>Results for Minor:</h4>
+            <ul>
+              {matchMinor.map((result) => (
+                <li key={result._id}>
+                  {result.username} <br /> {result.email}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div>
-          <h4>Results for Graduation Year:</h4>
-          <ul>
-            {matchGradYear.map((result) => (
-              <li key={result._id}>{result.username} <br/> {result.email}</li>
-            ))}
-          </ul>
-        </div>
+        {matchGradYear.length > 0 && (
+          <div>
+            <h4>Results for Graduation Year:</h4>
+            <ul>
+              {matchGradYear.map((result) => (
+                <li key={result._id}>
+                  {result.username} <br /> {result.email}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div>
-          <h4>Results for Borough:</h4>
-          <ul>
-            {matchBorough.map((result) => (
-              <li key={result._id}>{result.username} <br/> {result.email}</li>
-            ))}
-          </ul>
-        </div>
-
+        {matchBorough.length > 0 && (
+          <div>
+            <h4>Results for Borough:</h4>
+            <ul>
+              {matchBorough.map((result) => (
+                <li key={result._id}>
+                  {result.username} <br /> {result.email}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+
       
       
 

@@ -5,6 +5,7 @@ import { Home } from './pages/home';
 import { Facts } from './pages/facts';
 import { CreateFact } from "./pages/createFact";
 import { About } from './pages/about';
+import { CreateMember } from './pages/createMember';
 import { ContectUs } from './pages/contectUs';
 import { Auth } from './pages/auth';
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/facts" element={<Facts />} />
           <Route path="/createFact" element={<CreateFact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/createMember" element={<CreateMember />} />
           <Route path="/contectUs" element={<ContectUs />} />
           <Route path="/auth" element={<Auth />} />
         </Routes>
