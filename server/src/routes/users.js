@@ -32,13 +32,13 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     const user = await UserModel.findOne({ username });
     if (user) {
       return res.status(400).json({ message: "Username already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new UserModel({ username, password: hashedPassword });
+    const newUser = new UserModel({ username, password: hashedPassword, email });
     await newUser.save();
     res.json({ message: "User registered successfully" });
 });
@@ -65,11 +65,6 @@ router.post("/login", async (req, res) => {
 });
 
 
-  
-
-export { router as usersRouter };
-
-
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -83,3 +78,33 @@ export const verifyToken = (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+router.put("/mate", verifyToken, async (req, res) => {
+  const { userID } = req.body; 
+  const { major, minor, gradYear, borough } = req.body; 
+
+  try {
+    const user = await UserModel.findById(userID);
+    if (!user) {
+      return res.status(406).json({ message: "User not found" });
+    }
+
+    user.major = major;
+    user.minor = minor;
+    user.gradYear = gradYear;
+    user.borough = borough;
+
+    await user.save();
+
+    res.json({ message: "User data updated successfully" });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+
+
+export { router as usersRouter };
+
+
