@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useCookies } from "react-cookie";
@@ -11,7 +11,7 @@ export const Home = () => {
     minor: "",
     gradYear: "",
     borough: "",
-    userID: userID,
+    userOwner: userID,
   });
 
   const majors = [
@@ -56,14 +56,17 @@ export const Home = () => {
   const currentYear = new Date().getFullYear();
   const gradYearOptions = Array.from({ length: 8 }, (_, index) => currentYear + index);
 
+  const [submitForm, setSubmitForm] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
+    console.log("change",user);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("submit",user);
     try {
       await axios.put(
         "http://localhost:5001/auth/mate",
@@ -73,20 +76,64 @@ export const Home = () => {
         }
       );
 
+      setSubmitForm(true);
+      
       alert("User updated");
     } catch (error) {
       console.error(error);
     }
   };
 
+
+  const [matchMajor, setMatchMajor] = useState([]);
+  const [matchMinor, setMatchMinor] = useState([]);
+  const [matchGradYear, setMatchGradYear] = useState([]);
+  const [matchBorough, setMatchBorough] = useState([]);
+
+  useEffect(() => {
+ 
+    const searchUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/auth/mate/search",
+          {
+            params: { ...user },
+            headers: { authorization: cookies.access_token },
+          }
+        );
+        
+        console.log("response",response.data)
+
+        setMatchMajor(response.data.matchMajor);
+        setMatchMinor(response.data.matchMinor);
+        setMatchGradYear(response.data.matchGradYear);
+        setMatchBorough(response.data.matchBorough);
+
+        setSubmitForm(false);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (submitForm) {
+      searchUsers();
+    }
+    
+  }, [user, cookies.access_token, submitForm]);
+  
+
   
 
 
   return (
-    <div className="find-mate">
+    <div className="home">
       <h2>Home</h2>
       <h2>Find your mate</h2>
-      <form onSubmit={handleSubmit}>
+      <form 
+      onSubmit={(e) => {
+        handleSubmit(e);
+      }}>
         <label htmlFor="major">Major</label>
         <select
           id="major"
@@ -147,9 +194,54 @@ export const Home = () => {
           ))}
         </select>
         
-
         <button type="submit">Search</button>
       </form>
+ 
+
+      <div>
+        
+        <div>
+          <h4>Results for Major:</h4>
+          <ul>
+            {matchMajor.map((result) => (
+              <li key={result._id}>
+                {result.username} <br /> {result.email}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4>Results for Minor:</h4>
+          <ul>
+            {matchMinor.map((result) => (
+              <li key={result._id}>{result.username} <br/> {result.email}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4>Results for Graduation Year:</h4>
+          <ul>
+            {matchGradYear.map((result) => (
+              <li key={result._id}>{result.username} <br/> {result.email}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4>Results for Borough:</h4>
+          <ul>
+            {matchBorough.map((result) => (
+              <li key={result._id}>{result.username} <br/> {result.email}</li>
+            ))}
+          </ul>
+        </div>
+
+      </div>
+      
+      
+
 
     </div>
   );

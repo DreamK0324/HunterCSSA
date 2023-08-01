@@ -80,11 +80,11 @@ export const verifyToken = (req, res, next) => {
 };
 
 router.put("/mate", verifyToken, async (req, res) => {
-  const { userID } = req.body; 
+  const { userOwner } = req.body; 
   const { major, minor, gradYear, borough } = req.body; 
 
   try {
-    const user = await UserModel.findById(userID);
+    const user = await UserModel.findById(userOwner);
     if (!user) {
       return res.status(406).json({ message: "User not found" });
     }
@@ -99,6 +99,46 @@ router.put("/mate", verifyToken, async (req, res) => {
     res.json({ message: "User data updated successfully" });
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+
+
+router.get("/mate/search", verifyToken, async (req, res) => {
+  try {
+    const { major, minor, gradYear, borough } = req.query;
+
+    let matchMajor = [];
+    if (major) {
+      matchMajor = await UserModel.find({ major });
+    }
+    
+    let matchMinor = [];
+    if (minor) {
+      matchMinor = await UserModel.find({ minor });
+    }
+    
+    let matchGradYear = [];
+    if (gradYear) {
+      matchGradYear = await UserModel.find({ gradYear });
+    }
+
+    let matchBorough = [];
+    if (borough) {
+      matchBorough = await UserModel.find({ borough });
+    }
+
+    const searchResults = {
+      matchMajor: matchMajor,
+      matchMinor: matchMinor,
+      matchGradYear: matchGradYear,
+      matchBorough: matchBorough,
+    };
+
+    res.status(200).json(searchResults);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error searching for users." });
   }
 });
 
