@@ -37,7 +37,7 @@ export const Facts = () => {
       {/* <button onClick={handleCreateFact} className="create-button">Create Fact</button> */}
       {canCreateFact && (
         <button onClick={handleCreateFact} className="create-button">
-          Create Event
+          Create Event -Restricted
         </button>
       )}
 

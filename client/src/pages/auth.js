@@ -84,19 +84,21 @@ const Register = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!username || !password) {
-      alert("Please enter both username and password.");
-      return; 
+    if (!username || !password || !email) { 
+      alert("Please enter username, password, and email.");
+      return;
     }
 
     try {
       await axios.post("http://localhost:5001/auth/register", {
         username,
         password,
+        email,
       });
       alert("Registration Completed! Now login.");
     } catch (error) {
@@ -122,6 +124,7 @@ const Register = () => {
             onChange={(event) => setUsername(event.target.value)}
           />
         </div>
+        
         <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
@@ -131,6 +134,17 @@ const Register = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
+
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </div>
+
         <button type="submit">Register</button>
       </form>
     </div>
